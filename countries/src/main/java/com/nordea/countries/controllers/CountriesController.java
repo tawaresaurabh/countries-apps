@@ -6,11 +6,9 @@ package com.nordea.countries.controllers;
 import com.nordea.countries.dto.Countries;
 import com.nordea.countries.dto.Country;
 import com.nordea.countries.dto.CountryDetail;
-import com.nordea.countries.exceptions.CountryNotFoundException;
-import com.nordea.countries.exceptions.CountriesServiceException;
+import com.nordea.countries.service.CountryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,29 +29,34 @@ import static com.nordea.countries.Constants.*;
 @RequestMapping(value = BASE_URL)
 public class CountriesController {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+
+    private final CountryService countryService;
 
     private static final Logger logger = LoggerFactory.getLogger(CountriesController.class);
 
+    public CountriesController(RestTemplate restTemplate, CountryService countryService) {
+        this.restTemplate = restTemplate;
+        this.countryService = countryService;
+    }
+
     @GetMapping(value = "/")
     public ResponseEntity<Countries> getAllCountriesData(){
-        Countries countries;
-        ArrayList<LinkedHashMap<String,Object>> countriesResponseDataList;
+
+        ArrayList<LinkedHashMap<String,String>> countriesResponseDataList;
         try {
             countriesResponseDataList =  restTemplate.getForObject(REST_COUNTRIES_BASE_URL+"/all?"+FIELDS_STRING+"="+FIELDS,ArrayList.class);
             if(countriesResponseDataList != null) {
-                List<Country> countryList = countriesResponseDataList.stream().map(linkedHashMap -> populateCountry(linkedHashMap)).collect(Collectors.toList());
-                countries = new Countries();
-                countries.setCountries(countryList);
+                List<Country> countryList = countriesResponseDataList.stream().map(linkedHashMap -> countryService.populateCountry(linkedHashMap)).collect(Collectors.toList());
+                Countries countries = countryService.populateCountries(countryList);
                 return new ResponseEntity<>(countries, HttpStatus.OK);
             }else{
-                throw this.generateCountryNotFoundException();
+                throw countryService.generateCountryNotFoundException();
             }
         }catch (HttpClientErrorException e){
-            throw this.generateCountryNotFoundException();
+            throw countryService.generateCountryNotFoundException();
         } catch (Exception e){
-            throw this.generateCountiesServiceException();
+            throw countryService.generateCountiesServiceException();
         }
 
     }
@@ -66,50 +69,22 @@ public class CountriesController {
         try {
             countriesResponseDataList = restTemplate.getForObject(REST_COUNTRIES_BASE_URL + "/name/" + countryName + "?fullText=true", ArrayList.class);
             if (countriesResponseDataList != null) {
-                Optional<CountryDetail> countryDetailOptional = countriesResponseDataList.stream().findFirst().map(linkedHashMap -> populateCountryDetail(linkedHashMap));
+                Optional<CountryDetail> countryDetailOptional = countriesResponseDataList.stream().findFirst().map(linkedHashMap -> countryService.populateCountryDetail(linkedHashMap));
                 if (countryDetailOptional.isPresent()) {
                     countryDetail = countryDetailOptional.get();
                     return new ResponseEntity<>(countryDetail, HttpStatus.OK);
                 } else {
-                    throw this.generateCountryNotFoundException();
+                    throw countryService.generateCountryNotFoundException();
                 }
             } else {
-                throw this.generateCountryNotFoundException();
+                throw countryService.generateCountryNotFoundException();
             }
         } catch (HttpClientErrorException e) {
-            throw this.generateCountryNotFoundException();
+            throw countryService.generateCountryNotFoundException();
         } catch (Exception e) {
-            throw this.generateCountiesServiceException();
+            throw countryService.generateCountiesServiceException();
         }
     }
 
-    private CountriesServiceException generateCountiesServiceException(){
-        return new CountriesServiceException("Error fetching data from external countries service");
-    }
-
-
-    private CountryNotFoundException generateCountryNotFoundException(){
-        return new CountryNotFoundException("Country data not found");
-    }
-
-
-    private Country populateCountry(LinkedHashMap<String,Object> responseMap){
-        String name = (String) responseMap.get("name");
-        String alpha2Code = (String) responseMap.get("alpha2Code");
-        return new Country(name,alpha2Code);
-    }
-    private CountryDetail populateCountryDetail(LinkedHashMap<String,Object> responseMap) {
-        String name = (String) responseMap.get("name");
-        String alpha2Code = (String) responseMap.get("alpha2Code");
-        String capital = (String) responseMap.get("capital");
-        String flag = (String) responseMap.get("flag");
-        Integer population = (Integer) responseMap.get("population");
-        CountryDetail countryDetail = new CountryDetail(name, alpha2Code);
-        countryDetail.setCapital(capital);
-        countryDetail.setFlagFileUrl(flag);
-        countryDetail.setPopulation(population);
-        return countryDetail;
-
-    }
 
 }

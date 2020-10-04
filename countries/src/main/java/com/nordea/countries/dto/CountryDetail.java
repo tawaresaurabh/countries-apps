@@ -13,11 +13,7 @@ public class CountryDetail extends Country {
         super(name, countryCode);
     }
 
-    public CountryDetail(String name, String countryCode, String capital, Integer population, String flagFileUrl) {
-        super(name, countryCode);
-        this.capital = capital;
-        this.population = population;
-        this.flagFileUrl = flagFileUrl;
+    public CountryDetail() {
     }
 
     public String getCapital() {

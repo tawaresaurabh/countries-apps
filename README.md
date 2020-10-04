@@ -1,5 +1,5 @@
 1. Download the repo
-2. Repo has 2 projects  -  countries  and  countries-ui
+2. Repo has 2 projects    1. countries  and  2. countries-ui
 3. countries is backend spring boot project (maven based)  
 4. countries-ui is a react front end project  -  This will run in dev mode for simplicity 
 5. The projects are made assuming no other processes are running on port 8080 and 3000

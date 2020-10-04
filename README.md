@@ -8,7 +8,7 @@
 
 1. Open terminal and cd into the  countries project
 2. Make sure java and maven is configured correctly on the system and no applications are running on port 8080 and 
-3. run command  ### `mvn clean install`
+3. run command   `mvn clean install`
 4. This will create a .jar file in target folder of the project
 5. cd into target folder 
 6. Run command   `java -jar countries-0.0.1-SNAPSHOT.jar`

@@ -4,7 +4,7 @@
 4. countries-ui is a react front end project  -  This will run in dev mode for simplicity 
 5. The projects are made assuming no other processes are running on port 8080 and 3000
 
-## Steps for testing
+## Steps for Running backend
 
 1. Open terminal and cd into the  countries project
 2. Make sure java and maven is configured correctly on the system and no applications are running on port 8080 and 
@@ -15,6 +15,7 @@
 7. This should start the backend project on port 8080 and can be accessed by http://localhost:8080/countries/ using cURL or browser
 8. Rest endpoints can now be tested
 
+## Steps for Running frontend
 
 1. Open another terminal and cd into  countries-ui project
 2. Make sure node is installed on the machine 

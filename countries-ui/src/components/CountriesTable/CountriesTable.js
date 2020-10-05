@@ -43,6 +43,7 @@ export default function CountriesTable(props) {
                     setShowModal(true)
                 })
                 .catch(function (error) {
+                    setServerError(true)
                     console.log(error);
                 })
         }
@@ -76,7 +77,7 @@ export default function CountriesTable(props) {
 
             {
                 isServerError &&
-                <Alert variant="danger">Error while fetching data</Alert>
+                <Alert variant="danger">Error while fetching data from remote service</Alert>
             }
 
 

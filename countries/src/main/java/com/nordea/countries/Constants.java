@@ -9,6 +9,7 @@ public class Constants {
     public static final String ALPHA_2_CODE_FIELD = "alpha2Code";
     public static final String FIELDS  = new StringJoiner(";").add(NAME_FIELD).add(ALPHA_2_CODE_FIELD).toString();
     public static final String BASE_URL = "/countries";
+    public static final String BASE_URL_REACTIVE = "/countries/reactive";
 
 
 }

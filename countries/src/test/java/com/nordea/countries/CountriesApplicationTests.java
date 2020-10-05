@@ -1,19 +1,13 @@
 package com.nordea.countries;
 
 import com.nordea.countries.controllers.CountriesController;
-import com.nordea.countries.dto.Countries;
+
+import com.nordea.countries.exceptions.CountriesServiceException;
 import com.nordea.countries.exceptions.CountryNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,6 +43,16 @@ class CountriesApplicationTests {
 				.andExpect(status().isNotFound())
 				.andExpect(result -> assertTrue(result.getResolvedException() instanceof CountryNotFoundException))
 				.andExpect(result -> assertEquals("Country data not found", result.getResolvedException().getMessage()));
+	}
+
+
+	@Test
+	//Test needed to be done while being disconnected from the internet
+	public void getServerNotConnectedException() throws Exception {
+		this.mockMvc.perform(get("/countries/{name}", "India"))
+				.andExpect(status().isInternalServerError())
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof CountriesServiceException))
+				.andExpect(result -> assertEquals("Error fetching data from external countries service", result.getResolvedException().getMessage()));
 	}
 
 

@@ -54,14 +54,16 @@ public class CountriesController {
                 throw countryService.generateCountryNotFoundException();
             }
         }catch (HttpClientErrorException e){
+            logger.error(e.getMessage());
             throw countryService.generateCountryNotFoundException();
         } catch (Exception e){
+            logger.error(e.getMessage());
             throw countryService.generateCountiesServiceException();
         }
 
     }
 
-    @GetMapping(value = "/{name}")
+    @GetMapping("/{name}")
     public ResponseEntity<CountryDetail>  getCountryData(@PathVariable("name") String countryName)  {
         logger.debug("getCountryData: country {}", countryName);
         CountryDetail countryDetail;
@@ -80,8 +82,10 @@ public class CountriesController {
                 throw countryService.generateCountryNotFoundException();
             }
         } catch (HttpClientErrorException e) {
+            logger.error(e.getMessage());
             throw countryService.generateCountryNotFoundException();
         } catch (Exception e) {
+            logger.error(e.getMessage());
             throw countryService.generateCountiesServiceException();
         }
     }

@@ -12,7 +12,7 @@ export default function CountriesDetail({ showModal, onOKHanlder, country }) {
             </Modal.Header>
             <Modal.Body>
                 <Table striped>
-                    
+
 
                     <tbody>
 

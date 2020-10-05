@@ -83,7 +83,7 @@ export default function CountriesTable(props) {
 
             {
 
-                !isServerError &&
+                !isServerError && countryList.length > 0 &&
 
                 <Table striped>
                     <thead>
@@ -95,9 +95,10 @@ export default function CountriesTable(props) {
                     <tbody>
 
                         {
-                            countryList.length > 0 &&
-                            countryList.map((country, index) => (<CountryTableRow key={index} countryName={country.name} countryCode={country.country_code} onCountryLinkClick={handleCountryLinkClick} />))
-
+                            countryList.map((country, index) => (<CountryTableRow key={index} 
+                                                                                  countryName={country.name} 
+                                                                                  countryCode={country.country_code} 
+                                                                                  onCountryLinkClick={handleCountryLinkClick} />))
                         }
                     </tbody>
                 </Table>

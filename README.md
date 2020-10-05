@@ -11,9 +11,14 @@
 3. run command   `mvn clean install`
 4. This will create a .jar file in target folder of the project
 5. cd into target folder 
-6. Run command   `java -jar countries-0.0.1-SNAPSHOT.jar`
-7. This should start the backend project on port 8080 and can be accessed by http://localhost:8080/countries/ using cURL or browser
-8. Rest endpoints can now be tested
+6. Run command   `java -jar countries-0.0.1-SNAPSHOT.ja
+7. This should start the backend project on port 8080 and can be accessed by http://localhost:8080/ using cURL or browser
+8. Active endpoints are as follows
+  1. GET http://localhost:8080/countries
+  2. GET http://localhost:8080/countries/{name}   //where name is full name of the country ex. Finland
+  3. GET http://localhost:8080/countries/reactive
+  4. GET http://localhost:8080/countries/reactive/{name} ////where name is full name of the country ex. Finland
+9. Rest endpoints can now be tested
 
 ## Steps for running frontend
 
